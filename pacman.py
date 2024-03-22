@@ -135,10 +135,10 @@ def move():
             point.move(course)
         else:
             options = [
-                vector(5, 0),
-                vector(-5, 0),
-                vector(0, 5),
-                vector(0, -5),
+                vector(8, 0),
+                vector(-8, 0),
+                vector(0, 8),
+                vector(0, -8),
             ]
             plan = choice(options)
             course.x = plan.x
@@ -154,7 +154,7 @@ def move():
         if abs(pacman - point) < 20:
             return
 
-    ontimer(move, 100)
+    ontimer(move, 50)
 
 
 def change(x, y):
