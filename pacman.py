@@ -9,23 +9,34 @@ Exercises
 5. Make the ghosts smarter.
 """
 
+# Libraries needed
 from random import choice
 import turtle as t
 
 from freegames import floor, vector
 
+# Initialize state
 state = {'score': 0}
+
+# Initialize turtle objects
 path = t.Turtle(visible=False)
 writer = t.Turtle(visible=False)
+
+# Initialize aim for pacman movement
 aim = vector(5, 0)
+
+# Initialize pacman position
 pacman = vector(-40, -80)
+
+# Initialize ghosts positions and movements
 ghosts = [
     [vector(-180, 160), vector(5, 0)],
     [vector(-180, -160), vector(0, 5)],
     [vector(100, 160), vector(0, -5)],
     [vector(100, -160), vector(-5, 0)],
 ]
-# fmt: off
+
+# Board configuration
 tiles = [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
@@ -50,6 +61,7 @@ tiles = [
 ]
 
 
+# Draw a square at given position
 def square(x, y):
     path.up()
     path.goto(x, y)
@@ -63,6 +75,7 @@ def square(x, y):
     path.end_fill()
 
 
+# Convert coodrinate to index in tiles list
 def offset(point):
     x = (floor(point.x, 20) + 200) / 20
     y = (180 - floor(point.y, 20)) / 20
@@ -70,6 +83,7 @@ def offset(point):
     return index
 
 
+# Check if a given point is valid on the board
 def valid(point):
     index = offset(point)
 
@@ -84,6 +98,7 @@ def valid(point):
     return point.x % 20 == 0 or point.y % 20 == 0
 
 
+# Draw the board
 def world():
     t.bgcolor('black')
     path.color('blue')
@@ -102,6 +117,7 @@ def world():
                 path.dot(2, 'white')
 
 
+# Move pacman and ghosts
 def move():
     writer.undo()
     writer.write(state['score'])
@@ -151,12 +167,14 @@ def move():
     t.ontimer(move, 50)
 
 
+# Change the direction of movement for pacman
 def change(x, y):
     if valid(pacman + vector(x, y)):
         aim.x = x
         aim.y = y
 
 
+# Setup the game window and controls
 t.setup(420, 420, 370, 0)
 t.hideturtle()
 t.tracer(False)
