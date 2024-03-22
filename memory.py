@@ -25,6 +25,9 @@ state = {'mark': None}
 # List to keep track of whether each tile is hidden or revealed
 hide = [True] * 64
 
+# Variable to keep track of the number of tap events
+tap_count = 0
+
 # Function to draw a white square with a black outline at (x, y)
 def square(x, y):
     """Draw white square with black outline at (x, y)."""
@@ -50,7 +53,9 @@ def xy(count):
 
 # Function to handle a tap (click) event
 def tap(x, y):
-    """Update mark and hidden tiles based on tap."""
+    """Update mark, hidden tiles, and tap count based on tap."""
+    global tap_count
+    tap_count += 1  # Increment the tap count
     spot = index(x, y)
     mark = state['mark']
 
@@ -65,7 +70,7 @@ def tap(x, y):
 
 # Function to draw the game screen
 def draw():
-    """Draw image and tiles."""
+    """Draw image, tiles, and display tap count."""
     clear()
     goto(0, 0)
     shape(car)
@@ -86,6 +91,10 @@ def draw():
         goto(x + 2, y)
         color('black')
         write(tiles[mark], font=('Arial', 30, 'normal'))
+
+    # Display the tap count
+    goto(-180, 180)
+    write(f'Taps: {tap_count}', font=('Arial', 16, 'normal'))
 
     update()
     ontimer(draw, 100)
