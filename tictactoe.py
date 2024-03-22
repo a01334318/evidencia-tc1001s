@@ -7,7 +7,7 @@ Exercises
 3. How would you detect when someone has won?
 4. How could you create a computer player?
 """
-from turtle import *
+import turtle as t
 from freegames import line
 
 # Define the grid size and initialize the grid with empty strings
@@ -15,8 +15,9 @@ from freegames import line
 GRID_SIZE = 3
 grid_data = [[''] * GRID_SIZE for _ in range(GRID_SIZE)]
 
+
 def grid():
-    """Draw tic-tac-toe grid."""
+    # Draw tic-tac-toe grid.
     line(-67, 200, -67, -200)
     line(67, 200, 67, -200)
     line(-200, -67, 200, -67)
@@ -25,25 +26,26 @@ def grid():
 
 # Function to draw X player
 def drawx(x, y):
-    """Draw X player."""
-    #The color function is called to change the color of the player X to blue
-    color("blue")
+    # Draw X player.
+    # The color function is called to change the color of the player X to blue
+    t.color("blue")
     line(x, y, x + 133, y + 133)
     line(x, y + 133, x + 133, y)
 
+
 # Function to draw O player
 def drawo(x, y):
-    """Draw O player."""
-    #The color function is called to change the color of the player o to red
-    color("red")
-    up()
-    goto(x + 67, y + 5)
-    down()
-    circle(62)
+    # Draw O player.
+    # The color function is called to change the color of the player o to red
+    t.color("red")
+    t.up()
+    t.goto(x + 67, y + 5)
+    t.down()
+    t.circle(62)
 
 
 def floor(value):
-    """Round value down to grid with square size 133."""
+    # Round value down to grid with square size 133.
     return ((value + 200) // 133) * 133 - 200
 
 
@@ -52,33 +54,32 @@ players = [drawx, drawo]
 
 
 def tap(x, y):
-    """Draw X or O in tapped square."""
+    # Draw X or O in tapped square.
     x = floor(x)
     y = floor(y)
     player = state['player']
     draw = players[player]
-    
 
     # Convert x and y to indexes
     row = int((y + 200) // 133)
     col = int((x + 200) // 133)
-    
+
     # Check if the box is already used with the indexes from above
     if grid_data[row][col] == '':
-        #draws the player inside the box
-        draw(x, y) 
-        #changes the data for that specific box into the player
+        # draws the player inside the box
+        draw(x, y)
+        # changes the data for that specific box into the player
         grid_data[row][col] = 'X' if player == 0 else 'O'
-        #The player changes
-        update()
+        # The player changes
+        t.update()
         state['player'] = not player
 
 
-setup(420, 420, 370, 0)
-hideturtle()
-tracer(False)
+t.setup(420, 420, 370, 0)
+t.hideturtle()
+t.tracer(False)
 grid()
-update()
-onscreenclick(tap)
-done()
+t.update()
+t.onscreenclick(tap)
+t.done()
 
