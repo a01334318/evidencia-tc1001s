@@ -68,9 +68,14 @@ def tap(x, y):
         hide[mark] = False
         state['mark'] = None
 
+# Function to check if all tiles are revealed
+def all_revealed():
+    """Check if all tiles are revealed."""
+    return all(not h for h in hide)
+
 # Function to draw the game screen
 def draw():
-    """Draw image, tiles, and display tap count."""
+    """Draw image and tiles."""
     clear()
     goto(0, 0)
     shape(car)
@@ -95,6 +100,11 @@ def draw():
     # Display the tap count
     goto(-180, 180)
     write(f'Taps: {tap_count}', font=('Arial', 16, 'normal'))
+
+    # Check if all tiles are revealed
+    if all_revealed():
+        goto(-180, 160)
+        write("Congratulations! You've revealed all tiles!", font=('Arial', 16, 'normal'))
 
     update()
     ontimer(draw, 100)
