@@ -7,11 +7,13 @@ Exercises
 3. How would you detect when someone has won?
 4. How could you create a computer player?
 """
-
 from turtle import *
-
 from freegames import line
 
+# Define the grid size and initialize the grid with empty strings
+# so later we can change the empty string to a player.
+GRID_SIZE = 3
+grid_data = [[''] * GRID_SIZE for _ in range(GRID_SIZE)]
 
 def grid():
     """Draw tic-tac-toe grid."""
@@ -55,9 +57,21 @@ def tap(x, y):
     y = floor(y)
     player = state['player']
     draw = players[player]
-    draw(x, y)
-    update()
-    state['player'] = not player
+    
+
+    # Convert x and y to indexes
+    row = int((y + 200) // 133)
+    col = int((x + 200) // 133)
+    
+    # Check if the box is already used with the indexes from above
+    if grid_data[row][col] == '':
+        #draws the player inside the box
+        draw(x, y) 
+        #changes the data for that specific box into the player
+        grid_data[row][col] = 'X' if player == 0 else 'O'
+        #The player changes
+        update()
+        state['player'] = not player
 
 
 setup(420, 420, 370, 0)
