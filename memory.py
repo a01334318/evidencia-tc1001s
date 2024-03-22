@@ -9,9 +9,10 @@ Exercises:
 5. Use letters instead of tiles.
 """
 
-from random import *
-from turtle import *
+import random as r
+import turtle as t
 from freegames import path
+
 
 # Load the car image from file
 car = path('car.gif')
@@ -28,28 +29,32 @@ hide = [True] * 64
 # Variable to keep track of the number of tap events
 tap_count = 0
 
+
 # Function to draw a white square with a black outline at (x, y)
 def square(x, y):
     """Draw white square with black outline at (x, y)."""
-    up()
-    goto(x, y)
-    down()
-    color('black', 'white')
-    begin_fill()
+    t.up()
+    t.goto(x, y)
+    t.down()
+    t.color('black', 'white')
+    t.begin_fill()
     for count in range(4):
-        forward(50)
-        left(90)
-    end_fill()
+        t.forward(50)
+        t.left(90)
+    t.end_fill()
+
 
 # Function to convert (x, y) coordinates to tiles index
 def index(x, y):
     """Convert (x, y) coordinates to tiles index."""
     return int((x + 200) // 50 + ((y + 200) // 50) * 8)
 
+
 # Function to convert tiles count to (x, y) coordinates
 def xy(count):
     """Convert tiles count to (x, y) coordinates."""
     return (count % 8) * 50 - 200, (count // 8) * 50 - 200
+
 
 # Function to handle a tap (click) event
 def tap(x, y):
@@ -68,18 +73,20 @@ def tap(x, y):
         hide[mark] = False
         state['mark'] = None
 
+
 # Function to check if all tiles are revealed
 def all_revealed():
     """Check if all tiles are revealed."""
     return all(not h for h in hide)
 
+
 # Function to draw the game screen
 def draw():
     """Draw image and tiles."""
-    clear()
-    goto(0, 0)
-    shape(car)
-    stamp()
+    t.clear()
+    t.goto(0, 0)
+    t.shape(car)
+    t.stamp()
 
     # Draw the tiles
     for count in range(64):
@@ -92,43 +99,45 @@ def draw():
     # If there is a marked tile and it is hidden, display its value
     if mark is not None and hide[mark]:
         x, y = xy(mark)
-        up()
-        goto(x + 2, y)
-        color('black')
-        write(tiles[mark], font=('Arial', 30, 'normal'))
+        t.up()
+        t.goto(x + 2, y)
+        t.color('black')
+        t.write(tiles[mark], font=('Arial', 30, 'normal'))
 
     # Display the tap count
-    goto(-180, 180)
-    write(f'Taps: {tap_count}', font=('Arial', 16, 'normal'))
+    t.goto(-180, 180)
+    t.write(f'Taps: {tap_count}', font=('Arial', 16, 'normal'))
 
     # Check if all tiles are revealed
     if all_revealed():
-        goto(-180, 160)
-        write("Congratulations! You've revealed all tiles!", font=('Arial', 16, 'normal'))
+        t.goto(-180, 160)
+        t.write("Congratulations! You've revealed all tiles!",
+                font=('Arial', 16, 'normal'))
 
-    update()
-    ontimer(draw, 100)
+    t.update()
+    t.ontimer(draw, 100)
+
 
 # Shuffle the tile numbers for random arrangement
-shuffle(tiles)
+r.shuffle(tiles)
 
 # Set up the game window
-setup(420, 420, 370, 0)
+t.setup(420, 420, 370, 0)
 
 # Add the car image as a shape
-addshape(car)
+t.addshape(car)
 
 # Hide the turtle cursor
-hideturtle()
+t.hideturtle()
 
 # Disable animation tracer
-tracer(False)
+t.tracer(False)
 
 # Register the tap function to handle click events
-onscreenclick(tap)
+t.onscreenclick(tap)
 
 # Start drawing the game
 draw()
 
 # Finish the game window
-done()
+t.done()
