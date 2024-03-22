@@ -21,14 +21,19 @@ def grid():
     line(-200, 67, 200, 67)
 
 
+# Function to draw X player
 def drawx(x, y):
     """Draw X player."""
+    #The color function is called to change the color of the player X to blue
+    color("blue")
     line(x, y, x + 133, y + 133)
     line(x, y + 133, x + 133, y)
 
-
+# Function to draw O player
 def drawo(x, y):
     """Draw O player."""
+    #The color function is called to change the color of the player o to red
+    color("red")
     up()
     goto(x + 67, y + 5)
     down()
@@ -62,3 +67,4 @@ grid()
 update()
 onscreenclick(tap)
 done()
+
