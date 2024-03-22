@@ -10,13 +10,13 @@ Exercises
 """
 
 from random import choice
-from turtle import *
+import turtle as t
 
 from freegames import floor, vector
 
 state = {'score': 0}
-path = Turtle(visible=False)
-writer = Turtle(visible=False)
+path = t.Turtle(visible=False)
+writer = t.Turtle(visible=False)
 aim = vector(5, 0)
 pacman = vector(-40, -80)
 ghosts = [
@@ -48,11 +48,9 @@ tiles = [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 ]
-# fmt: on
 
 
 def square(x, y):
-    """Draw square using path at (x, y)."""
     path.up()
     path.goto(x, y)
     path.down()
@@ -66,7 +64,6 @@ def square(x, y):
 
 
 def offset(point):
-    """Return offset of point in tiles."""
     x = (floor(point.x, 20) + 200) / 20
     y = (180 - floor(point.y, 20)) / 20
     index = int(x + y * 20)
@@ -74,7 +71,6 @@ def offset(point):
 
 
 def valid(point):
-    """Return True if point is valid in tiles."""
     index = offset(point)
 
     if tiles[index] == 0:
@@ -89,8 +85,7 @@ def valid(point):
 
 
 def world():
-    """Draw world using path."""
-    bgcolor('black')
+    t.bgcolor('black')
     path.color('blue')
 
     for index in range(len(tiles)):
@@ -108,11 +103,10 @@ def world():
 
 
 def move():
-    """Move pacman and all ghosts."""
     writer.undo()
     writer.write(state['score'])
 
-    clear()
+    t.clear()
 
     if valid(pacman + aim):
         pacman.move(aim)
@@ -126,9 +120,9 @@ def move():
         y = 180 - (index // 20) * 20
         square(x, y)
 
-    up()
-    goto(pacman.x + 10, pacman.y + 10)
-    dot(20, 'yellow')
+    t.up()
+    t.goto(pacman.x + 10, pacman.y + 10)
+    t.dot(20, 'yellow')
 
     for point, course in ghosts:
         if valid(point + course):
@@ -144,37 +138,36 @@ def move():
             course.x = plan.x
             course.y = plan.y
 
-        up()
-        goto(point.x + 10, point.y + 10)
-        dot(20, 'red')
+        t.up()
+        t.goto(point.x + 10, point.y + 10)
+        t.dot(20, 'red')
 
-    update()
+    t.update()
 
     for point, course in ghosts:
         if abs(pacman - point) < 20:
             return
 
-    ontimer(move, 50)
+    t.ontimer(move, 50)
 
 
 def change(x, y):
-    """Change pacman aim if valid."""
     if valid(pacman + vector(x, y)):
         aim.x = x
         aim.y = y
 
 
-setup(420, 420, 370, 0)
-hideturtle()
-tracer(False)
+t.setup(420, 420, 370, 0)
+t.hideturtle()
+t.tracer(False)
 writer.goto(160, 160)
 writer.color('white')
 writer.write(state['score'])
-listen()
-onkey(lambda: change(5, 0), 'Right')
-onkey(lambda: change(-5, 0), 'Left')
-onkey(lambda: change(0, 5), 'Up')
-onkey(lambda: change(0, -5), 'Down')
+t.listen()
+t.onkey(lambda: change(5, 0), 'Right')
+t.onkey(lambda: change(-5, 0), 'Left')
+t.onkey(lambda: change(0, 5), 'Up')
+t.onkey(lambda: change(0, -5), 'Down')
 world()
 move()
-done()
+t.done()
