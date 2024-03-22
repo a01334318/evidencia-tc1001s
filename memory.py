@@ -11,15 +11,21 @@ Exercises:
 
 from random import *
 from turtle import *
-
 from freegames import path
 
+# Load the car image from file
 car = path('car.gif')
+
+# Create a list of tile numbers for the game
 tiles = list(range(32)) * 2
+
+# Dictionary to keep track of game state
 state = {'mark': None}
+
+# List to keep track of whether each tile is hidden or revealed
 hide = [True] * 64
 
-
+# Function to draw a white square with a black outline at (x, y)
 def square(x, y):
     """Draw white square with black outline at (x, y)."""
     up()
@@ -32,30 +38,32 @@ def square(x, y):
         left(90)
     end_fill()
 
-
+# Function to convert (x, y) coordinates to tiles index
 def index(x, y):
     """Convert (x, y) coordinates to tiles index."""
     return int((x + 200) // 50 + ((y + 200) // 50) * 8)
 
-
+# Function to convert tiles count to (x, y) coordinates
 def xy(count):
     """Convert tiles count to (x, y) coordinates."""
     return (count % 8) * 50 - 200, (count // 8) * 50 - 200
 
-
+# Function to handle a tap (click) event
 def tap(x, y):
     """Update mark and hidden tiles based on tap."""
     spot = index(x, y)
     mark = state['mark']
 
+    # If no tile is marked or the clicked tile is different from the marked one
     if mark is None or mark == spot or tiles[mark] != tiles[spot]:
         state['mark'] = spot
     else:
+        # If the clicked tile matches the marked tile, reveal both
         hide[spot] = False
         hide[mark] = False
         state['mark'] = None
 
-
+# Function to draw the game screen
 def draw():
     """Draw image and tiles."""
     clear()
@@ -63,6 +71,7 @@ def draw():
     shape(car)
     stamp()
 
+    # Draw the tiles
     for count in range(64):
         if hide[count]:
             x, y = xy(count)
@@ -70,6 +79,7 @@ def draw():
 
     mark = state['mark']
 
+    # If there is a marked tile and it is hidden, display its value
     if mark is not None and hide[mark]:
         x, y = xy(mark)
         up()
@@ -80,12 +90,26 @@ def draw():
     update()
     ontimer(draw, 100)
 
-
+# Shuffle the tile numbers for random arrangement
 shuffle(tiles)
+
+# Set up the game window
 setup(420, 420, 370, 0)
+
+# Add the car image as a shape
 addshape(car)
+
+# Hide the turtle cursor
 hideturtle()
+
+# Disable animation tracer
 tracer(False)
+
+# Register the tap function to handle click events
 onscreenclick(tap)
+
+# Start drawing the game
 draw()
+
+# Finish the game window
 done()
